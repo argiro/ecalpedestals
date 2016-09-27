@@ -81,7 +81,7 @@ class EEDetId:
         det =  3
         subdet = 2
         self.id = ((det&0xF)<<28)|((subdet&0x7)<<25)
-        self.id |=  (ix&0x7f)|((iy&0x7f)<<7)| ( 0x4000 if iz >0 else 0)    
+        self.id |=  (iy&0x7f)|((ix&0x7f)<<7)| ( 0x4000 if iz >0 else 0)    
 
     def zside(self):
         return 1  if self.id&0x4000 else -1

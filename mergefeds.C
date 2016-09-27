@@ -32,6 +32,7 @@ int mergefeds(){
     vector<TTree * > trees;
 
     
+    //vector<string> rfiles = glob("testrun/pedestals_fed???_??????_??????.root");
     vector<string> rfiles = glob("new/pedestals_fed???_??????_??????.root");
 
     for (auto const fname:rfiles){
@@ -60,6 +61,9 @@ int mergefeds(){
         trees[0]->SetBranchAddress("lpedrms",&tmplpedrms);
 
         trees[0]->GetEntry(evno);
+
+        run = tmprun;
+        timestamp= tmptimestamp;
         
         //cout << "Timestamp " << tmptimestamp<< endl;
         
@@ -81,8 +85,7 @@ int mergefeds(){
                 }
             }
         }
-        run = tmprun;
-        timestamp= tmptimestamp;
+
         tree.Fill();
     }
     tree.Write();
