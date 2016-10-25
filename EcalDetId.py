@@ -1,4 +1,4 @@
-
+from bisect import bisect_right
 
 class EBDetId:
 
@@ -10,6 +10,14 @@ class EBDetId:
         subdet = 1
         self.id = ((det&0xF)<<28)|((subdet&0x7)<<25)
         self.id |=  ((0x10000|(ieta<<9)) if ieta>0 else  ((-ieta)<<9))  | (iphi&0x1FF)
+
+    def fromHashedId(self, hashedId):
+          if hashedId <0 or hashedId > 2*360*85 : 
+              raise IndexError('Invalid hash '+ str(hashedId))
+
+          pseudo_eta = int(hashedId/360) - 85
+          self.fromEtaPhi(pseudo_eta<0 if pseudo_eta<0 else pseudo_eta+1, hashedId%360+1) 
+         
 
     def zside(self) :
         return 1 if self.id&0x10000 else -1 
@@ -83,6 +91,24 @@ class EEDetId:
         self.id = ((det&0xF)<<28)|((subdet&0x7)<<25)
         self.id |=  (iy&0x7f)|((ix&0x7f)<<7)| ( 0x4000 if iz >0 else 0)    
 
+    def fromHashedId(self, hashedId):
+
+          kEEhalf = 7324
+          if hashedId > kEEhalf*2 or hashedId <0 :
+              raise IndexError('Invalid hashed index '+ str(hashedId))
+
+          hi = hashedId
+          iz = -1 if hi < kEEhalf else  1  
+          di =  hi% kEEhalf
+          ii = bisect_right( self.kdi, di )  -1
+          iy = int(1 + ii/2)  
+          ix = self.kxf[ii] + di - self.kdi[ii]  
+          self.fromXYZ( ix, iy, iz ) 
+
+
+        
+
+
     def zside(self):
         return 1  if self.id&0x4000 else -1
 
@@ -98,3 +124,21 @@ class EEDetId:
 
     def rawId(self):
         return self.id
+
+    
+#eb = EBDetId()
+#eb.fromEtaPhi(24,83)
+# hid=eb.hashedIndex()
+# print 24,83,hid
+# eb2 = EBDetId()
+# eb2.fromHashedId(hid)
+# print eb2.ieta(), eb2.iphi()
+
+
+# ee = EEDetId()
+# ee.fromXYZ(20,65,1)
+# hid=ee.hashedIndex()
+# print 20,65, hid
+# ee2 = EEDetId()
+# ee2.fromHashedId(hid)
+# print ee2.ix(), ee2.iy()
