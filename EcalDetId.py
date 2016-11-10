@@ -16,7 +16,7 @@ class EBDetId:
               raise IndexError('Invalid hash '+ str(hashedId))
 
           pseudo_eta = int(hashedId/360) - 85
-          self.fromEtaPhi(pseudo_eta<0 if pseudo_eta<0 else pseudo_eta+1, hashedId%360+1) 
+          self.fromEtaPhi(pseudo_eta if pseudo_eta<0 else pseudo_eta+1, hashedId%360+1) 
          
 
     def zside(self) :
@@ -142,3 +142,4 @@ class EEDetId:
 # ee2 = EEDetId()
 # ee2.fromHashedId(hid)
 # print ee2.ix(), ee2.iy()
+
