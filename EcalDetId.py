@@ -1,5 +1,45 @@
 from bisect import bisect_right
 
+channelMap = {}
+statusMapEB  = {}        
+statusMapEE  = {}        
+
+
+with open('EE.txt') as f:
+    next(f)
+    for line in f:
+        ix = int(line.split()[4])
+        iy = int(line.split()[5])
+        iz = int(line.split()[3])
+        detid =int(line.split()[0])
+        channelMap[(ix,iy,iz)] = detid
+
+with open('BadChannels.txt') as f:    
+    for line in f:
+        sline = line.split()
+        if sline[0] == "EB":
+            hashid = int(sline[1])
+            statusMapEB[hashid]= int(sline[2])
+        if sline[0] == "EE":
+            hashid = int(sline[1])
+            statusMapEE[hashid]= int(sline[2])
+
+def channelStatusEB(hashid):
+    
+    result = statusMapEB.get(hashid)
+    if result is None:
+        return 0
+    else : 
+        return result
+
+def channelStatusEE(hashid):
+
+    result = statusMapEE.get(hashid)
+    if result is None:
+        return 0
+    else : 
+        return result
+
 class EBDetId:
 
     def __init__(self, id=0):
@@ -84,6 +124,13 @@ class EEDetId:
                         6934, 6964, 6994, 7024, 7054, 7079, 7104, 7129, 7154, 7179,
                         7204, 7219, 7234, 7249, 7264, 7274, 7284, 7294, 7304, 7314
                         ]
+
+
+        
+    def validDetId(self,ix,iy,iz):
+        if channelMap.get((ix,iy,iz)) is None:
+            return False
+        return True
 
     def fromXYZ(self,ix,iy,iz):
         det =  3
