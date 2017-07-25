@@ -268,3 +268,6 @@ if __name__ == "__main__":
 
 
   
+# example
+#python pedestalsxml2root.py ../ecalpedPCL/476a2a1a515ab12bf10a2064575a005e781327b5.dat ped296115.root
+#python compare_pedfromtrees_ave.py ped296173.root laserntuple/ana_ped_stef.root -f2 1 -o test
