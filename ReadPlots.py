@@ -85,7 +85,7 @@ def main():
              print helpmessage
          ee = EEDetId()
          ee.fromXYZ(etax,phiy,z)
-         idx = ee.hashedIndex() + kEBChannels
+         idx = ee.hashedIndex() 
     
    else:
       idx=hash
