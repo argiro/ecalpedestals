@@ -76,6 +76,10 @@ class EBDetId:
     def rawId(self):
         return self.id
 
+    @staticmethod
+    def sizeforDenseIndex():
+        return 61200
+
 class EEDetId:
 
 

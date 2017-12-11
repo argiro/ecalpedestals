@@ -13,6 +13,8 @@ def makeTree(infile,outfile):
     ped    = array('f',[0.0]*nchs)
     pedrms = array('f',[0.0]*nchs)
 
+  
+    tfile = TFile(outfile,'recreate') 
     t = TTree('T','T')
     t.Branch('ped')
     t.Branch('ped',ped,'ped['+str(nchs)+']/F')
@@ -26,7 +28,7 @@ def makeTree(infile,outfile):
 
     t.Fill()
 
-    tfile = TFile(outfile,'recreate')
+
 
     tfile.cd()
     t.Write()                                
